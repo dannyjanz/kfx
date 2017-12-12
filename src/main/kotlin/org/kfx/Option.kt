@@ -23,16 +23,12 @@ class Some<T>(private val value: T) : Option<T>, Container<T> by StandardFullCon
 
     override fun toString(): String = "Some(${value.toString()})"
 
-    override fun equals(other: Any?): Boolean {
-        return if (other != null) {
-            when (other) {
-                is Some<*> -> other.value!! == value
-                else -> false
-            }
-        } else {
-            false
+    override fun equals(other: Any?): Boolean = other ifNotNull {
+        when (it) {
+            is Some<*> -> it.value == value
+            else -> false
         }
-    }
+    } ?: false
 
     override fun hashCode(): Int = value!!.hashCode()
 
@@ -46,19 +42,15 @@ sealed class None<T> : Option<T>, StandardEmptyContainer<T> {
     override fun toString(): String = "None"
 
     companion object : None<Nothing>() {
-        operator fun <T>invoke(): None<T> = this as None<T>
+        operator fun <T> invoke(): None<T> = this as None<T>
     }
 
-    override fun equals(other: Any?): Boolean {
-        return if (other != null) {
-            when (other) {
-                is None<*> -> true
-                else -> false
-            }
-        } else {
-            false
+    override fun equals(other: Any?): Boolean = other ifNotNull {
+        when (it) {
+            is None<*> -> true
+            else -> false
         }
-    }
+    } ?: false
 
     override fun hashCode(): Int = 0
 
