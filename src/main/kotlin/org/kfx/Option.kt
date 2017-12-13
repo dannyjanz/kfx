@@ -30,7 +30,7 @@ class Some<T>(private val value: T) : Option<T>, Container<T> by StandardFullCon
         }
     } ?: false
 
-    override fun hashCode(): Int = value!!.hashCode()
+    override fun hashCode(): Int = value?.hashCode() ?: 0
 
 }
 

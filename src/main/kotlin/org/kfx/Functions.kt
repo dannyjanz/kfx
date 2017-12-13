@@ -15,7 +15,7 @@ infix fun <T, R, X> Function1<T, R>.andThen(other: (R) -> X): (T) -> X = { arg: 
 
 infix fun <T, R> T?.ifNotNull(func: (T) -> R?): R? = if (this != null) func(this) else null
 
-infix fun <A, R, X> Function1<A, R?>.andIfDefined(other: (R) -> X?): (A) -> X? = { arg: A ->
+infix fun <T, R, X> Function1<T, R?>.andIfDefined(other: (R) -> X?): (T) -> X? = { arg: T ->
     this(arg) ifNotNull { other(it) }
 }
 
