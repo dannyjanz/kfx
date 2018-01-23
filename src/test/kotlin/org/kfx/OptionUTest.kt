@@ -35,5 +35,13 @@ class OptionUTest : FunSpec() {
             optionA flatMap { a -> optionB map { b -> Pair(a, b) } } shouldBe None
             optionB flatMap { b -> optionA map { a -> Pair(a, b) } } shouldBe None
         }
+
+        test("filtering an Option should result in a Some if the Option is defined and the predicate holds") {
+            Option(1) filter { it < 2 } shouldBe Option(1)
+        }
+
+        test("filtering and Option should result in a None if the predicate does not hold") {
+            Option(2) filter { it < 2 } shouldBe None
+        }
     }
 }

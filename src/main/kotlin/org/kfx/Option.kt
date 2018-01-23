@@ -2,7 +2,7 @@
 
 package org.kfx
 
-interface Option<T> : Monad<Option<*>, T>, Container<T> {
+interface Option<T> : Monad<Option<*>, T>, Filterable<Option<*>, T>, Container<T> {
 
     companion object {
         operator fun <T> invoke(maybe: T?): Option<T> {
@@ -13,6 +13,7 @@ interface Option<T> : Monad<Option<*>, T>, Container<T> {
 
     override fun <R> map(transform: (T) -> R): Option<R>
     override fun <R> flatMap(bind: (T) -> Monad<Option<*>, R>): Option<R>
+    override fun filter(pred: (T) -> Boolean): Option<T>
 
 }
 
@@ -20,6 +21,7 @@ class Some<T>(private val value: T) : Option<T>, Container<T> by StandardFullCon
 
     override infix fun <R> flatMap(bind: (T) -> Monad<Option<*>, R>): Option<R> = value.let(bind) as Option<R>
     override infix fun <R> map(transform: (T) -> R): Option<R> = value.let(transform).let { Some(it) }
+    override fun filter(pred: (T) -> Boolean): Option<T> = if (pred(value)) Some(value) else None as Option<T>
 
     override fun toString(): String = "Some(${value.toString()})"
 
@@ -38,6 +40,7 @@ sealed class None<T> : Option<T>, StandardEmptyContainer<T> {
 
     override fun <R> flatMap(bind: (T) -> Monad<Option<*>, R>): Option<R> = None as Option<R>
     override infix fun <R> map(transform: (T) -> R): Option<R> = None as Option<R>
+    override fun filter(pred: (T) -> Boolean): Option<T> = None as Option<T>
 
     override fun toString(): String = "None"
 
