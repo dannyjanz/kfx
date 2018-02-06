@@ -2,7 +2,7 @@
 
 package org.kfx
 
-interface Option<T> : Monad<Option<*>, T>, Filterable<Option<*>, T>, Container<T> {
+interface Option<T> : Monad<Option<*>, T>, Functor<Option<*>, T>, Filterable<Option<*>, T>, Container<T> {
 
     companion object {
         operator fun <T> invoke(maybe: T?): Option<T> {
@@ -17,7 +17,7 @@ interface Option<T> : Monad<Option<*>, T>, Filterable<Option<*>, T>, Container<T
 
 }
 
-class Some<T>(private val value: T) : Option<T>, Container<T> by StandardFullContainer(value) {
+class Some<T>(val value: T) : Option<T>, Container<T> by StandardFullContainer(value) {
 
     override infix fun <R> flatMap(bind: (T) -> Monad<Option<*>, R>): Option<R> = value.let(bind) as Option<R>
     override infix fun <R> map(transform: (T) -> R): Option<R> = value.let(transform).let { Some(it) }

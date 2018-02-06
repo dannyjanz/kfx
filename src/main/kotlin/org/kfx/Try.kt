@@ -2,7 +2,7 @@
 
 package org.kfx
 
-interface Try<T> : Monad<Try<*>, T>, Filterable<Try<*>, T>, Container<T> {
+interface Try<T> : Monad<Try<*>, T>, Functor<Try<*>, T>, Filterable<Try<*>, T>, Container<T> {
 
     companion object {
 

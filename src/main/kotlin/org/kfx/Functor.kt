@@ -2,6 +2,6 @@ package org.kfx
 
 interface Functor<Self, out T> {
 
-    fun <R> map(transformation: (T) -> R): Functor<Self, R>
+    infix fun <R> map(transform: (T) -> R): Functor<Self, R>
 }
 
