@@ -1,3 +1,5 @@
+@file:Suppress("UNREACHABLE_CODE")
+
 package org.kfx
 
 import io.kotlintest.matchers.shouldBe
