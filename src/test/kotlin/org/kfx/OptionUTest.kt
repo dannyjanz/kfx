@@ -45,5 +45,19 @@ class OptionUTest : FunSpec() {
         test("filtering and Option should result in a None if the predicate does not hold") {
             Option(2) filter { it < 2 } shouldBe None
         }
+
+        val double = { a: Int -> a * 2 }
+
+        test("apply should apply a function wrapped in a Some to a value in a Some and return a Some of the result") {
+
+            Some(3).apply(Some(double)) shouldBe Some(6)
+        }
+
+        test("apply should return None if the value or the function are None") {
+
+            Some(3).apply<Int>(None()) shouldBe None
+            None<Int>().apply(Some(double)) shouldBe None
+        }
+
     }
 }
