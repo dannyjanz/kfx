@@ -4,12 +4,13 @@ package org.kfx
 
 interface Option<T> : Monad<Option<*>, T>, Functor<Option<*>, T>, Applicative<Option<*>, T>, Filterable<Option<*>, T>, Container<T> {
 
-    companion object {
+    companion object : Point<Option<*>> {
+        override fun <T> point(init: () -> T): Option<T> = Some(init())
+
         operator fun <T> invoke(maybe: T?): Option<T> {
             return if (maybe != null) Some(maybe) else None as Option<T>
         }
     }
-
 
     override fun <R> map(transform: (T) -> R): Option<R>
     override fun <R> flatMap(bind: (T) -> Monad<Option<*>, R>): Option<R>
