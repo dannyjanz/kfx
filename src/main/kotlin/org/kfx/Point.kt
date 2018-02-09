@@ -1,7 +1,9 @@
 package org.kfx
 
-interface Point<Self, T> {
+interface Pointable<Self, T>
 
-    fun point(init: () -> T): Point<Self, T>
+interface Point<Self> {
+
+    fun <T>point(init: () -> T): Pointable<Self, T>
 
 }
