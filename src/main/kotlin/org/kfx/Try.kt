@@ -2,7 +2,7 @@
 
 package org.kfx
 
-interface Try<T> : Monad<Try<*>, T>, Functor<Try<*>, T>, Filterable<Try<*>, T>, Container<T> {
+interface Try<T> : Monad<Try<*>, T>, Applicative<Try<*>, T>, Functor<Try<*>, T>, Filterable<Try<*>, T>, Container<T> {
 
     companion object {
 
@@ -23,19 +23,20 @@ interface Try<T> : Monad<Try<*>, T>, Functor<Try<*>, T>, Filterable<Try<*>, T>, 
 
     override fun <R> map(transform: (T) -> R): Try<R>
     override fun <R> flatMap(bind: (T) -> Monad<Try<*>, R>): Try<R>
+    override fun <R> apply(func: Applicative<Try<*>, (T) -> R>): Try<R>
     override fun filter(pred: (T) -> Boolean): Try<T>
 }
 
 class Success<T>(val value: T) : Try<T>, Container<T> by StandardFullContainer(value) {
 
-
     override fun <R> map(transform: (T) -> R): Try<R> = Try { value.let(transform) }
-
     override fun <R> flatMap(bind: (T) -> Monad<Try<*>, R>): Try<R> = try {
         value.let(bind)
     } catch (e: Throwable) {
         Failure(e)
     } as Try<R>
+
+    override fun <R> apply(func: Applicative<Try<*>, (T) -> R>): Try<R> = (func as Try<(T) -> R>).map { it(value) }
 
     override fun filter(pred: (T) -> Boolean): Try<T> =
             if (pred(value)) this
@@ -63,6 +64,7 @@ class Failure<T> private constructor(val error: Throwable) : Try<T>, StandardEmp
 
     override fun <R> map(transform: (T) -> R): Try<R> = this as Try<R>
     override fun <R> flatMap(bind: (T) -> Monad<Try<*>, R>): Try<R> = this as Try<R>
+    override fun <R> apply(func: Applicative<Try<*>, (T) -> R>): Try<R> = this as Try<R>
     override fun filter(pred: (T) -> Boolean): Try<T> = this
 
     override fun isSuccess(): Boolean = false
@@ -94,3 +96,4 @@ class Failure<T> private constructor(val error: Throwable) : Try<T>, StandardEmp
 
 fun <T> T.asSuccess(): Success<T> = Success(this)
 fun <T> Throwable.asFailure(): Failure<T> = Failure(this) as Failure<T>
+fun <T> Failure<Nothing>.being() = this as Try<T>

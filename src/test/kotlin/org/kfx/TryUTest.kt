@@ -96,5 +96,18 @@ class TryUTest : FunSpec() {
             Success(1).recoverWith { Success(2) } shouldBe Success(1)
             Success(1).recoverWith { Failure(error) } shouldBe Success(1)
         }
+
+        val double = { a: Int -> a * 2 }
+
+        test("apply should apply a function wrapped in a Success to a value in a Success and return a Success of the result") {
+
+            Success(3).apply(Success(double)) shouldBe Success(6)
+        }
+
+        test("apply should return a Failure if the value or the function is a Failure") {
+
+            Success(3).apply(Failure(error).being<(Int) -> Int>()) shouldBe Failure(error)
+            (Failure(error).being<Int>()).apply(Success(double)) shouldBe Failure(error)
+        }
     }
 }
