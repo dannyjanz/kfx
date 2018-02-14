@@ -27,7 +27,7 @@ interface Try<T> : Monad<Try<*>, T>, Applicative<Try<*>, T>, Functor<Try<*>, T>,
     override fun filter(pred: (T) -> Boolean): Try<T>
 }
 
-class Success<T>(val value: T) : Try<T>, Container<T> by StandardFullContainer(value) {
+data class Success<T>(val value: T) : Try<T>, Container<T> by StandardFullContainer(value) {
 
     override fun <R> map(transform: (T) -> R): Try<R> = Try { value.let(transform) }
     override fun <R> flatMap(bind: (T) -> Monad<Try<*>, R>): Try<R> = try {

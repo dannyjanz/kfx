@@ -4,7 +4,8 @@ package org.kfx
 
 interface Option<T> : Monad<Option<*>, T>, Functor<Option<*>, T>, Applicative<Option<*>, T>, Filterable<Option<*>, T>, Container<T> {
 
-    companion object : Point<Option<*>> {
+    companion object : Point<Option<*>>, Lift<Option<*>> {
+
         override fun <T> point(init: () -> T): Option<T> = Some(init())
 
         operator fun <T> invoke(maybe: T?): Option<T> {
@@ -19,18 +20,12 @@ interface Option<T> : Monad<Option<*>, T>, Functor<Option<*>, T>, Applicative<Op
 
 }
 
-class Some<T>(val value: T) : Option<T>, Container<T> by StandardFullContainer(value) {
+data class Some<T>(val value: T) : Option<T>, Container<T> by StandardFullContainer(value) {
 
     override infix fun <R> flatMap(bind: (T) -> Monad<Option<*>, R>): Option<R> = value.let(bind) as Option<R>
     override infix fun <R> map(transform: (T) -> R): Option<R> = value.let(transform).let { Some(it) }
     override fun filter(pred: (T) -> Boolean): Option<T> = if (pred(value)) Some(value) else None as Option<T>
-
-    override fun <R> apply(func: Applicative<Option<*>, (T) -> R>): Option<R> = (func as Option<*>).let {
-        when (it) {
-            is Some<*> -> Some((it.value as (T) -> R).invoke(value))
-            else -> None()
-        }
-    }
+    override fun <R> apply(func: Applicative<Option<*>, (T) -> R>): Option<R> = (func as Option<(T) -> R>).map { it(value) }
 
     override fun toString(): String = "Some(${value.toString()})"
 
