@@ -50,5 +50,17 @@ class TryUtilUTest : ShouldSpec() {
 
             }
         }
+
+        "Traversing a list with Try" {
+            should("produce a Success of the resulting List if all operations succeed") {
+
+                listOf(1, 2, 3, 4).traverse(Try, { x -> Try { x * 2 } }) shouldBe Success(listOf(2, 4, 6, 8))
+            }
+
+            should("produce a Failure if any operation results in a Failure") {
+
+                listOf(1, 2, 3, 4).traverse(Try, { x -> Try { if (x < 2) x * 2 else throw error } }) shouldBe Failure(error)
+            }
+        }
     }
 }

@@ -14,3 +14,17 @@ fun <T> List<Try<T>>.sequence(): Try<List<T>> {
         else -> Success(listOf())
     }
 }
+
+object TryTraverse : TraverseWith<Try<*>> {
+    override fun <T, R> traverse(list: List<T>, function: (T) -> Monad<Try<*>, R>): Try<List<R>> {
+        var newList = listOf<R>()
+        for (e in list) {
+            val result = function(e)
+            when (result) {
+                is Success<*> -> newList += result.value as R
+                is Failure<*> -> return result as Failure<List<R>>
+            }
+        }
+        return Success(newList)
+    }
+}

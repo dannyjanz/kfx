@@ -4,7 +4,7 @@ package org.kfx
 
 interface Try<T> : Monad<Try<*>, T>, Applicative<Try<*>, T>, Functor<Try<*>, T>, Filterable<Try<*>, T>, Container<T> {
 
-    companion object {
+    companion object : Lift<Try<*>>, TraverseWith<Try<*>> by TryTraverse {
 
         operator fun <T> invoke(func: () -> T): Try<T> {
             return try {
