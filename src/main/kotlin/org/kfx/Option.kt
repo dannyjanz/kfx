@@ -2,7 +2,13 @@
 
 package org.kfx
 
-interface Option<T> : Monad<Option<*>, T>, Functor<Option<*>, T>, Applicative<Option<*>, T>, Filterable<Option<*>, T>, Container<T> {
+interface Option<T> :
+        Monad<Option<*>, T>,
+        Functor<Option<*>, T>,
+        Applicative<Option<*>, T>,
+        Filterable<Option<*>, T>,
+        Container<T>,
+        Pointable<Option<*>, T> {
 
     companion object : Point<Option<*>>, Lift<Option<*>> {
 

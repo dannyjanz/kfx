@@ -55,6 +55,17 @@ class ReaderUTest : ShouldSpec() {
             }
         }
 
+        "Reader as an Applicative" {
+            should("apply the given Reader and retrieve the resulting function and apply it to the output of this Reader") {
+
+                val andDump = Reader { c : Context -> { s : String -> s + " and then dumping ${c.test()}" } }
+
+                loadStuff.apply(andDump)(RealContext()) shouldBe "loading with Real Context and then dumping Real Context"
+                loadStuff.apply(andDump)(MockContext()) shouldBe "loading with Mock Context and then dumping Mock Context"
+
+            }
+        }
+
 
     }
 }
