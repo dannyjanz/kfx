@@ -1,7 +1,8 @@
-package org.kfx
+package kfx
 
 import io.kotlintest.matchers.shouldBe
 import io.kotlintest.specs.ShouldSpec
+import kfx.*
 
 class TryUtilUTest : ShouldSpec() {
     init {

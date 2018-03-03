@@ -1,4 +1,4 @@
-package org.kfx
+package kfx
 
 fun <T> not(func: (T) -> Boolean) = { arg: T -> !func(arg) }
 

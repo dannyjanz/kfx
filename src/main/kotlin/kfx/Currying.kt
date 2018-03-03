@@ -1,4 +1,4 @@
-package org.kfx
+package kfx
 
 operator fun <A, B, Z> Function2<A, B, Z>.invoke(a: A): (B) -> Z = curry(this)(a)
 

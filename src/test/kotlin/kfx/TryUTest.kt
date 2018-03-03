@@ -1,11 +1,15 @@
 @file:Suppress("UNREACHABLE_CODE")
 
-package org.kfx
+package kfx
 
 import io.kotlintest.matchers.beOfType
 import io.kotlintest.matchers.should
 import io.kotlintest.matchers.shouldBe
 import io.kotlintest.specs.FunSpec
+import kfx.Failure
+import kfx.Success
+import kfx.Try
+import kfx.being
 
 class TryUTest : FunSpec() {
     init {

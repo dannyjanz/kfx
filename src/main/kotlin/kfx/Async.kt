@@ -1,6 +1,6 @@
 @file:Suppress("UNCHECKED_CAST", "EXPERIMENTAL_FEATURE_WARNING")
 
-package org.kfx
+package kfx
 
 import kotlinx.coroutines.experimental.Deferred
 import kotlinx.coroutines.experimental.async

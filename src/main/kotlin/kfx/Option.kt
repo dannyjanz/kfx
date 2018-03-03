@@ -1,6 +1,6 @@
 @file:Suppress("UNCHECKED_CAST")
 
-package org.kfx
+package kfx
 
 interface Option<T> :
         Monad<Option<*>, T>,

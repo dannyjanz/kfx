@@ -1,6 +1,6 @@
 @file:Suppress("UNCHECKED_CAST")
 
-package org.kfx
+package kfx
 
 interface Try<T> : Monad<Try<*>, T>, Applicative<Try<*>, T>, Functor<Try<*>, T>, Filterable<Try<*>, T>, Container<T> {
 

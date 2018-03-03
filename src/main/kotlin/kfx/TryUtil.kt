@@ -1,6 +1,6 @@
 @file:Suppress("UNCHECKED_CAST")
 
-package org.kfx
+package kfx
 
 fun <T> List<Try<T>>.partition(): Pair<List<Success<T>>, List<Failure<T>>> =
         this.partition { it.isSuccess() } as Pair<List<Success<T>>, List<Failure<T>>>

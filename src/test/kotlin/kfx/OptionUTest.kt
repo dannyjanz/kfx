@@ -1,9 +1,12 @@
 @file:Suppress("UNREACHABLE_CODE")
 
-package org.kfx
+package kfx
 
 import io.kotlintest.matchers.shouldBe
 import io.kotlintest.specs.FunSpec
+import kfx.None
+import kfx.Option
+import kfx.Some
 
 class OptionUTest : FunSpec() {
     init {

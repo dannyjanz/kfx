@@ -1,4 +1,4 @@
-package org.kfx
+package kfx
 
 interface Pointable<Self, T>
 

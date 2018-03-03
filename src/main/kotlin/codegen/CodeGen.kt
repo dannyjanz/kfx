@@ -1,6 +1,6 @@
 package codegen
 
-import org.kfx.init
+import kfx.init
 
 fun main(args: Array<String>) {
 

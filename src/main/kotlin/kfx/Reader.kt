@@ -1,6 +1,6 @@
 @file:Suppress("UNCHECKED_CAST")
 
-package org.kfx
+package kfx
 
 interface Reader<In, T> : Monad<Reader<In, *>, T>, Functor<Reader<*, *>, T>, Applicative<Reader<In, *>, T> {
 

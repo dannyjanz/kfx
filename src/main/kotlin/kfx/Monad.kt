@@ -1,4 +1,4 @@
-package org.kfx
+package kfx
 
 interface Monad<Self, out T>
 {
