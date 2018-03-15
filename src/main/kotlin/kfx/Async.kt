@@ -31,7 +31,7 @@ abstract class Async<T> : Monad<Async<*>, T>, Applicative<Async<*>, T>, FunctorW
             }.asAsync(defaultContext)
 
 
-    override fun <R> apply(func: Applicative<Async<*>, (T) -> R>): Applicative<Async<*>, R> =
+    override fun <R> apply(func: Applicative<Async<*>, (T) -> R>): Async<R> =
             async {
                 val value = deferred.await()
                 val function = (func as Async<(T) -> R>).deferred.await()
