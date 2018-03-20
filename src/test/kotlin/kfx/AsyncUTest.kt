@@ -19,6 +19,8 @@ class AsyncUTest : ShouldSpec() {
         val expectedExecutionOrder = listOf("A", "B")
         var executions = listOf<String>()
 
+        val add = { a: Int -> { b: Int -> a + b } }
+
         "Async" {
             should("execute a given operation parallel to the invoking Thread") {
 
@@ -41,6 +43,10 @@ class AsyncUTest : ShouldSpec() {
                 }
 
             }
+
+            should("execute all functions passed to onComplete, once the result is available") {
+
+            }
         }
 
         "Async as a Functor" {
@@ -56,9 +62,7 @@ class AsyncUTest : ShouldSpec() {
 
                 executions += "A"
 
-                soon {
-                    executions should containsInOrder(expectedExecutionOrder)
-                }
+                soon { executions should containsInOrder(expectedExecutionOrder) }
 
                 runBlocking {
                     original.await() shouldBe Success(2)
@@ -75,14 +79,35 @@ class AsyncUTest : ShouldSpec() {
                 val asyncA = Async { 1 + 1 }
                 val asyncB = Async { 2 * 10 }
 
-                val asynAplusB = asyncB.apply(asyncA.map { { n: Int -> it + n } })
+                val asyncAplusB = asyncB.apply(asyncA.map(add))
 
                 runBlocking {
-                    asynAplusB.await() shouldBe Success(22)
+                    asyncAplusB.await() shouldBe Success(22)
                 }
 
             }
         }
 
+        "Async as a Monad" {
+
+            should("bind the wrapped value to the given function resulting in another Async " +
+                    "and return the new Async that will contain the result") {
+
+                val asyncA = Async { 1 + 1 }
+                val asyncB = Async { 2 * 10 }
+
+                val asyncAplusB = asyncA.flatMap { asyncB.map(add(it)) }
+
+                val asyncAtimes10 = asyncA.flatMap { a -> Async { a * 10 } }
+
+                runBlocking {
+                    asyncAplusB.await() shouldBe Success(22)
+                    asyncAtimes10.await() shouldBe Success(20)
+                }
+            }
+
+
+        }
     }
+
 }
